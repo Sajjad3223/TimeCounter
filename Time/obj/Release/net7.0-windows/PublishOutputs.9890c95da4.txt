@@ -1,0 +1,11 @@
+F:\C# Projects\Time\Time\bin\Release\net7.0-windows\publish\Time.exe
+F:\C# Projects\Time\Time\bin\Release\net7.0-windows\publish\Time.dll
+F:\C# Projects\Time\Time\bin\Release\net7.0-windows\publish\Time.deps.json
+F:\C# Projects\Time\Time\bin\Release\net7.0-windows\publish\Time.runtimeconfig.json
+F:\C# Projects\Time\Time\bin\Release\net7.0-windows\publish\Time.pdb
+F:\C# Projects\Time\Time\bin\Release\net7.0-windows\publish\System.Data.SqlClient.dll
+F:\C# Projects\Time\Time\bin\Release\net7.0-windows\publish\runtimes\win-arm64\native\sni.dll
+F:\C# Projects\Time\Time\bin\Release\net7.0-windows\publish\runtimes\win-x64\native\sni.dll
+F:\C# Projects\Time\Time\bin\Release\net7.0-windows\publish\runtimes\win-x86\native\sni.dll
+F:\C# Projects\Time\Time\bin\Release\net7.0-windows\publish\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
+F:\C# Projects\Time\Time\bin\Release\net7.0-windows\publish\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll

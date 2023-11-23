@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>bin\Release\net7.0-windows\publish\timer.ico</ApplicationIcon>
+    <PackageIcon>timer.png</PackageIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="bin\Release\net7.0-windows\publish\timer.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="C:\Users\Sajad\Desktop\timer.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,23 @@
+﻿<Window x:Class="Time.AddWorkPage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Time"
+        mc:Ignorable="d" FontFamily="Vazir FD" WindowStartupLocation="CenterOwner"
+        Title="AddWorkPage" Height="120" Width="200">
+    <Grid Margin="8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBox x:Name="TextboxWorkName" FlowDirection="RightToLeft"/>
+        <Button Margin="0 4" Grid.Row="1" BorderThickness="0" Background="ForestGreen" Foreground="White" Click="AddWork">افزودن کار
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="6"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+    </Grid>
+</Window>
