@@ -1,4 +1,6 @@
-﻿namespace Time;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Time;
 internal class TimerData
 {
     public int Id { get; set; }
@@ -10,9 +12,8 @@ internal class TimerData
 }
 internal class Work
 {
-    public Work(int id, string workName)
+    public Work(string workName)
     {
-        Id = id;
         WorkName = workName;
     }
 

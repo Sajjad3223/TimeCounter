@@ -27,7 +27,7 @@ namespace Time
         private void AddWork(object sender, RoutedEventArgs e)
         {
             DatabaseManager databaseManager = new DatabaseManager();
-            databaseManager.AddWork(TextboxWorkName.Text);
+            databaseManager.AddWorkSqlite(TextboxWorkName.Text);
             Close();
         }
     }

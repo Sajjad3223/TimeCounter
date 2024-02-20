@@ -1,12 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using static System.Net.Mime.MediaTypeNames;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Time.Context;
 
 namespace Time;
 internal class DatabaseManager
 {
-    public TimerData ReadData(int selectedWork)
+    private TimerContext context;
+    public TimerContext Context
+    {
+        get 
+        {
+            if (context == null)
+            {
+                context = new TimerContext();
+                context.Database.EnsureCreated();
+            }
+
+            return context;
+        }
+    }
+
+    /*public TimerData ReadData(int selectedWork)
     {
         int id = 0;
         int workId = selectedWork;
@@ -45,8 +59,16 @@ internal class DatabaseManager
             IsClosed = false,
             WorkId = workId
         };
+    }*/
+    public TimerData ReadDataSqlite(int selectedWork)
+    {
+        var timer = Context.Timers.FirstOrDefault(t => !t.IsClosed && t.WorkId == selectedWork);
+        if (timer == null)
+            timer = CreateNewRecordSqlite(selectedWork);
+
+        return timer;
     }
-    public List<Work> ReadWorks()
+    /*public List<Work> ReadWorks()
     {
         List<Work> works = new();
         using var connection = new SqlConnection(@"Data Source=.;Initial Catalog=TimerDB;TrustServerCertificate=True;Trusted_Connection=True;");
@@ -66,8 +88,13 @@ internal class DatabaseManager
         connection.Close();
 
         return works;
+    }*/
+    public List<Work> ReadWorksSqlite()
+    {
+        return Context.Works.ToList();
     }
-    public void SetData(int id, int selectedWorkId, int h, int m, int s)
+
+    /*public void SetData(int id, int selectedWorkId, int h, int m, int s)
     {
         using var connection = new SqlConnection(@"Data Source=.;Initial Catalog=TimerDB;TrustServerCertificate=True;Trusted_Connection=True;");
         connection.Open();
@@ -87,8 +114,20 @@ internal class DatabaseManager
         command.Dispose();
 
         connection.Close();
+    }*/
+    public void SetDataSqlite(int id, int selectedWorkId, int h, int m, int s)
+    {
+        var timerData = Context.Timers.FirstOrDefault(t => t.Id == id && !t.IsClosed && t.WorkId == selectedWorkId);
+        if (timerData == null) return;
+
+        timerData.Hours = h;
+        timerData.Minutes = m;
+        timerData.Seconds = s;
+
+        Context.Update(timerData);
+        Context.SaveChanges();
     }
-    public void ResetData(int id,int selectedWorkId)
+    /*public void ResetData(int id,int selectedWorkId)
     {
         using var connection = new SqlConnection(@"Data Source=.;Initial Catalog=TimerDB;TrustServerCertificate=True;Trusted_Connection=True;");
         connection.Open();
@@ -106,9 +145,19 @@ internal class DatabaseManager
         command.Dispose();
 
         connection.Close();
+    }*/
+    public void ResetDataSqlite(int id, int selectedWorkId)
+    {
+        var timerData = Context.Timers.FirstOrDefault(t => t.Id == id && !t.IsClosed && t.WorkId == selectedWorkId);
+        if (timerData == null) return;
+
+        timerData.IsClosed = true;
+
+        Context.Update(timerData);
+        Context.SaveChanges();
     }
 
-    private void CreateNewRecord(int selectedWorkId)
+    /*private void CreateNewRecord(int selectedWorkId)
     {
         using var connection = new SqlConnection(@"Data Source=.;Initial Catalog=TimerDB;TrustServerCertificate=True;Trusted_Connection=True;");
         connection.Open();
@@ -127,9 +176,24 @@ internal class DatabaseManager
         command.Dispose();
 
         connection.Close();
+    }*/
+    private TimerData CreateNewRecordSqlite(int selectedWorkId)
+    {
+        var timerData = new TimerData()
+        {
+            Hours = 0,
+            Minutes = 0,
+            Seconds = 0,
+            WorkId = selectedWorkId,
+            IsClosed = false,
+        };
+
+        Context.Timers.Add(timerData);
+        Context.SaveChanges();
+        return timerData;
     }
 
-    internal void AddWork(string text)
+    /*internal void AddWork(string text)
     {
         using var connection = new SqlConnection(@"Data Source=.;Initial Catalog=TimerDB;TrustServerCertificate=True;Trusted_Connection=True;");
         connection.Open();
@@ -148,9 +212,14 @@ internal class DatabaseManager
         command.Dispose();
 
         connection.Close();
+    }*/
+    internal void AddWorkSqlite(string text)
+    {
+        Context.Works.Add(new Work(text));
+        Context.SaveChanges();
     }
 
-    internal int GetWorkId(string workName)
+    /*internal int GetWorkId(string workName)
     {
        
         using var connection = new SqlConnection(@"Data Source=.;Initial Catalog=TimerDB;TrustServerCertificate=True;Trusted_Connection=True;");
@@ -171,9 +240,16 @@ internal class DatabaseManager
         connection.Close();
 
         return workId;
+    }*/
+    internal int GetWorkIdSqlite(string workName)
+    {
+       
+        var work = Context.Works.FirstOrDefault(w=>w.WorkName.Contains(workName));
+
+        return work?.Id ?? -1;
     }
 
-    internal void RemoveWork(int selectedWorkId)
+    /*internal void RemoveWork(int selectedWorkId)
     {
         using var connection = new SqlConnection(@"Data Source=.;Initial Catalog=TimerDB;TrustServerCertificate=True;Trusted_Connection=True;");
         connection.Open();
@@ -189,5 +265,12 @@ internal class DatabaseManager
         command.Dispose();
 
         connection.Close();
+    }*/
+    internal void RemoveWorkSqlite(int selectedWorkId)
+    {
+        var work = Context.Works.FirstOrDefault(w=>w.Id == selectedWorkId);
+        if (work == null) return;
+        Context.Works.Remove(work);
+        Context.SaveChanges();
     }
 }

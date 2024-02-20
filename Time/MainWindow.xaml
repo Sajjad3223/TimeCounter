@@ -62,7 +62,7 @@
                     </Style>
                 </Button.Resources>
             </Button>
-            <Button Grid.Row="3" Padding="8" Margin="4" Background="Gray" Foreground="White" FontSize="16" Click="ResetData" BorderThickness="0">
+            <Button Grid.Row="3" Padding="8" Margin="4" BorderBrush="Gray" Background="Transparent" FontSize="16" Click="ResetData" BorderThickness="2">
                     ریست
                     <Button.Resources>
                         <Style TargetType="Border">

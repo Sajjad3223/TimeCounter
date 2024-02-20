@@ -71,7 +71,7 @@ namespace Time
             if (timer != null)
             {
                 timer.Stop();
-                databaseManager.SetData(id, selectedWorkId, hours, minutes, seconds);
+                databaseManager.SetDataSqlite(id, selectedWorkId, hours, minutes, seconds);
                 
                 StartButton.Visibility = Visibility.Visible;
                 StopButton.Visibility = Visibility.Collapsed;
@@ -85,7 +85,7 @@ namespace Time
 
         private void ReadData()
         {
-            var data = databaseManager.ReadData(selectedWorkId);
+            var data = databaseManager.ReadDataSqlite(selectedWorkId);
             if (data != null)
             {
                 id = data.Id;
@@ -98,7 +98,7 @@ namespace Time
         }
         private void ReadWorksData()
         {
-            var data = databaseManager.ReadWorks();
+            var data = databaseManager.ReadWorksSqlite();
             if (data.Any())
             {
                 WorksDropdown.Items.Clear();
@@ -114,13 +114,16 @@ namespace Time
 
         private void SetTimerData(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            databaseManager.SetData(id, selectedWorkId, hours, minutes, seconds);
+            databaseManager.SetDataSqlite(id, selectedWorkId, hours, minutes, seconds);
         }
 
         private void ResetData(object sender, RoutedEventArgs e)
         {
-            databaseManager.ResetData(id, selectedWorkId);
-            ReadData();
+            if (MessageBox.Show("آیا از ریست تایمر مطمئن هستید؟", "هشدار", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No, MessageBoxOptions.RtlReading) == MessageBoxResult.Yes)
+            {
+                databaseManager.ResetDataSqlite(id, selectedWorkId);
+                ReadData();
+            }
         }
 
         private void ChangeTimeCounter(object sender, SelectionChangedEventArgs e)
@@ -131,7 +134,7 @@ namespace Time
             if (selectedItem == null) return;
             string value = selectedItem.Content.ToString() ?? "";
 
-            selectedWorkId = databaseManager.GetWorkId(value);
+            selectedWorkId = databaseManager.GetWorkIdSqlite(value);
             ReadData();
         }
 
@@ -147,10 +150,10 @@ namespace Time
         {
             if(MessageBox.Show("آیا از حذف این کار مطمئن هستید؟","هشدار",MessageBoxButton.YesNo,MessageBoxImage.Warning,MessageBoxResult.No,MessageBoxOptions.RtlReading) == MessageBoxResult.Yes)
             {
-                databaseManager.RemoveWork(selectedWorkId);
+                databaseManager.RemoveWorkSqlite(selectedWorkId);
                 ReadWorksData();
                 WorksDropdown.SelectedIndex = 0;
-                selectedWorkId = databaseManager.GetWorkId(((ComboBoxItem)WorksDropdown.SelectedItem).Content.ToString() ?? "");
+                selectedWorkId = databaseManager.GetWorkIdSqlite(((ComboBoxItem)WorksDropdown.SelectedItem).Content.ToString() ?? "");
             }
         }
     }
